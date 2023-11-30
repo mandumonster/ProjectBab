@@ -1,13 +1,11 @@
 import * as RecipeRepository from '../data/recipe.js'
 import { getSocketIO } from '../connection/socket.js';
 
-const allData = await RecipeRepository.fetch_data();
-
 export async function getByType(req,res){
     try {
         const categoryId = req.params.id;
         console.log(categoryId);
-        const filteredData = filterDataByCategory(allData, categoryId);
+        const filteredData = await filterDataByCategory(categoryId);
         res.status(200).json(filteredData);
     } catch (error) {
         console.error(error);
@@ -28,12 +26,13 @@ export async function getRecipe(req, res) {
     }
 }
 
-function filterDataByCategory(data, categoryId) {
-    const filteredData = [];
-    for (const item of data.COOKRCP01.row) {
-        if (item.RCP_PAT2.includes(categoryId)) {
-            filteredData.push(item);
-        }
-    }
-    return filteredData;
+export async function filterDataByCategory(categoryId) {
+    const data = await RecipeRepository.getAll();
+    return data.filter(item => item.RCP_PAT2 === categoryId);
 }
+
+// export async function filterDataByCategory(categoryId) {
+//     // 카테고리에 따라 데이터 필터링
+//     const data = await RecipeRepository.getAll();
+//     return data.filter(item => item.category === categoryId);
+// }

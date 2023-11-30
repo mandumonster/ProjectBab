@@ -26,7 +26,7 @@ async function fetchDataBasedOnCategory() {
 
 
 document.addEventListener('DOMContentLoaded', () => {
-    const form = document.querySelector('form');
+    const form = document.querySelector('button');
     const input = document.querySelector('input');
     const ingredientsList = document.getElementById('list');
 
