@@ -10,20 +10,20 @@ function required(key, defaultValue=undefined){
 // or 문법을 이용하여 값이 있으면 value에 process.env[key] 없으면 defaultValue
 
 export const config = {
-    jwt: {
-        secretKey: required('JWT_SECRET'),
-        expriesInSec: parseInt(required('JWT_EXPIRES_SEC',172800))
-    },
-    bcrypt:{
-        saltRounds: parseInt(required('BCRYPT_SALT_ROUNDS',12))
-    },
+    // jwt: {
+    //     secretKey: required('JWT_SECRET'),
+    //     expriesInSec: parseInt(required('JWT_EXPIRES_SEC',172800))
+    // },
+    // bcrypt:{
+    //     saltRounds: parseInt(required('BCRYPT_SALT_ROUNDS',12))
+    // },
     host:{
         port:parseInt(required('HOST_PORT',8080))
     },
     db:{
         host:required('DB_HOST'),
-        user:required('DB_USER'),
-        database:required('DB_DATABASE'),
-        password:required('DB_PASSWORD')
+        // user:required('DB_USER'),
+        // database:required('DB_DATABASE'),
+        // password:required('DB_PASSWORD')
     }
 };

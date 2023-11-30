@@ -3,7 +3,7 @@ import { config } from './config.js';
 import cors from "cors";
 import morgan from "morgan";
 import { connectDB } from './db/database.js';
-import recipyRouter from './router/recipy.js'
+import recipyRouter from './router/recipe.js'
 import { initSocket } from "./connection/socket.js";
 
 const app = express()
@@ -21,4 +21,3 @@ connectDB().then(() => {
     const server = app.listen(config.host.port);
     initSocket(server);
 }).catch(console.error);
-
