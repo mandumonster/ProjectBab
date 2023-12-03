@@ -22,4 +22,8 @@ router.get('/my/', saveController.getByType); // /?id=국&userid=apple로 창에
 router.get('/my/detail/', saveController.getRecipe);   // /?id=국&userid=apple로 창에 검색해야함
 
 
+router.post('/saveData',saveController.saveData);
+router.delete('/deleteData',saveController.deleteData);
+
+
 export default router;

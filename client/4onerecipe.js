@@ -44,7 +44,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     const dataButton = document.getElementById('savebtn');
 
     // Get the recipe title
-    const title = prompt('Enter recipe title:');
+    var title = urlParams.get('data');
+    var userid= 'apple';    // 로그인하고 고쳐야함 ㄷㄷ
     if (!title) {
         return;
     }
@@ -67,6 +68,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     // Function to save data
+    // 내일할거 userid와 위의 dataExists를 받아와서 저것들을 하나의 json으로 묶은 다움 post로 보내버리고 그 json채로 저장하기
     async function saveData() {
         const howToCook = prompt('Enter how to cook:');
         if (!howToCook) {

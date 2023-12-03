@@ -35,3 +35,31 @@ export async function filterDataByCategory(categoryId, userId) {
     const data = await RecipeRepository.getByUserid(userId);
     return data.filter(item => item.RCP_PAT2 === categoryId);
 }
+
+
+// router.post('/saveData',saveController.saveData);
+// router.delete('/deleteData',saveController.deleteData);
+
+
+export async function saveData(){
+    const { title, howToCook } = req.body;
+
+    try {
+        await RecipeRepository.saveData(title, howToCook);
+        res.json({ success: true });
+    } catch (error) {
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+};
+
+
+export async function deleteData(){
+    const title = req.query.title;
+
+    try {
+        await RecipeRepository.deleteData(title);
+        res.json({ success: true });
+    } catch (error) {
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+}

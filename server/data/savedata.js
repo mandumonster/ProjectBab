@@ -61,7 +61,7 @@ const foodSchema = new Mongoose.Schema({
     ATT_FILE_NO_MAIN: String,
 });
 
-const Recipe = Mongoose.model('sugar', foodSchema);
+const Recipes = Mongoose.model('save', foodSchema);
 
 
 // Function to get data by user ID
@@ -78,6 +78,28 @@ export async function getByUserid(userId) {
         Mongoose.connection.close();
     }
 }
+
+
+
+export async function saveData(title, howToCook) {
+    try {
+        await Recipes.create({ RCP_NM: title, HOW_TO_COOK: howToCook });
+    } catch (error) {
+        console.error('Error saving data:', error.message);
+        throw error;
+    }
+}
+
+export async function deleteData(title) {
+    try {
+        await Recipes.deleteOne({ RCP_NM: title });
+    } catch (error) {
+        console.error('Error deleting data:', error.message);
+        throw error;
+    }
+}
+
+
 
 
 
