@@ -70,7 +70,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Function to save data
     // 내일할거 userid와 위의 dataExists를 받아와서 저것들을 하나의 json으로 묶은 다움 post로 보내버리고 그 json채로 저장하기
     async function saveData() {
-        const howToCook = prompt('Enter how to cook:');
+        const response = await fetch(`http://localhost:8080/my/detail/id=${encodeURIComponent(title)}&userid=${userid}`);
+        var dataExists = await response.json();
+        var howToCook = dataExists
+        howToCook.userid = userid;
         if (!howToCook) {
             return;
         }
@@ -81,7 +84,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ title, howToCook }),
+                body: JSON.stringify({howToCook }),
             });
 
             alert('Data saved to the database.');
