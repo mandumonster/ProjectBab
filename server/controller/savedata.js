@@ -1,11 +1,14 @@
-import * as RecipeRepository from '../data/recipe.js'
+import * as RecipeRepository from '../data/savedata.js'
 import { getSocketIO } from '../connection/socket.js';
+
+// fetch하는 함수
 
 export async function getByType(req,res){
     try {
-        const categoryId = req.params.id;
-        console.log(categoryId);
-        const filteredData = await filterDataByCategory(categoryId);
+        const categoryId = req.query.id;
+        const userId = req.query.userid;
+        console.log(categoryId, userId);
+        const filteredData = await filterDataByCategory(categoryId, userId);
         res.status(200).json(filteredData);
     } catch (error) {
         console.error(error);
@@ -15,9 +18,10 @@ export async function getByType(req,res){
 
 export async function getRecipe(req, res) {
     try {
-        const ingredientID = req.params.id;
-        console.log(ingredientID);
-        const data = await RecipeRepository.getAll();
+        const categoryId = req.query.id;
+        const userId = req.query.userid;
+        console.log(categoryId, userId);
+        const data = await RecipeRepository.getByUserid(userId);
         const oneEffect = data.filter((item) => item.RCP_NM.trim() == ingredientID);
         console.log(oneEffect);
         res.status(200).json(oneEffect);
@@ -27,13 +31,7 @@ export async function getRecipe(req, res) {
     }
 }
 
-export async function filterDataByCategory(categoryId) {
-    const data = await RecipeRepository.getAll();
+export async function filterDataByCategory(categoryId, userId) {
+    const data = await RecipeRepository.getByUserid(userId);
     return data.filter(item => item.RCP_PAT2 === categoryId);
 }
-
-// export async function filterDataByCategory(categoryId) {
-//     // 카테고리에 따라 데이터 필터링
-//     const data = await RecipeRepository.getAll();
-//     return data.filter(item => item.category === categoryId);
-// }

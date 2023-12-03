@@ -1,9 +1,10 @@
 async function fetchDataBasedOnCategory() {
     var urlParams = new URLSearchParams(window.location.search);
+    var userid=userid; // 로그인하고 받아올 userid 근데 이걸 어디서 받아와야할지모르겠어살려줘
     var category = urlParams.get('data');
     if (category) {
         try {
-            const response = await fetch(`http://localhost:8080/${category}`, {
+            const response = await fetch(`http://localhost:8080/my/id=${category}&userid=${userid}`, {
                 method: 'GET'
             });
             if (!response.ok) {
