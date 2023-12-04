@@ -13,7 +13,7 @@ async function fetchDataBasedOnCategory() {
             }
 
             const data = await response.json();
-            console.log(data);
+            // console.log(data);
 
             // Assuming there is only one item in the data array
             const recipeData = data[0];
@@ -53,14 +53,15 @@ document.addEventListener('DOMContentLoaded', async () => {
     try {
         const response = await fetch(`http://localhost:8080/my/detail/id=${encodeURIComponent(title)}&userid=${userid}`);
         const dataExists = await response.json();
-
+        // console.log('title:', title);
+        // console.log('dataExists:', dataExists);
         if (dataExists) {
             // If data exists, change the button to 'Delete'
-            dataButton.innerText = 'Delete Data';
+            dataButton.innerText = '삭제';
             dataButton.addEventListener('click', deleteData);
         } else {
             // If data doesn't exist, change the button to 'Save'
-            dataButton.innerText = 'Save Data';
+            dataButton.innerText = '저장';
             dataButton.addEventListener('click', saveData);
         }
     } catch (error) {
@@ -68,9 +69,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     // Function to save data
-    // 내일할거 userid와 위의 dataExists를 받아와서 저것들을 하나의 json으로 묶은 다움 post로 보내버리고 그 json채로 저장하기
+    // 내일할거 userid와 위의 dataExists를 받아와서 저것들을 하나의 json으로 묶은 다움 <- 여기까지 함 post로 보내버리고 그 json채로 저장하기
     async function saveData() {
-        const response = await fetch(`http://localhost:8080/my/detail/id=${encodeURIComponent(title)}&userid=${userid}`);
+        const response = await fetch(`http://localhost:8080/detail/${title}`)
         var dataExists = await response.json();
         var howToCook = dataExists
         howToCook.userid = userid;
