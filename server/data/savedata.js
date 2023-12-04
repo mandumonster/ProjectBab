@@ -1,5 +1,6 @@
-import { connectDB, getInformationCollection } from "../db/savedata.js";
+import { connectsaveDB,getInformationCollections } from "../db/savedata.js";
 import Mongoose from "mongoose";
+import { getAll } from "./recipe.js";
 
 
 // 테이블 형식
@@ -65,11 +66,12 @@ const Recipes = Mongoose.model('save', foodSchema);
 
 
 // Function to get data by user ID
-export async function getByUserid(userId) {
+export async function getByUserid(userid) {
     try {
-        await connectDB();
-        const informationCollection = getInformationCollection();
-        const data = await informationCollection.find({ userId: userId }).toArray();
+        await connectsaveDB();
+        const informationCollection = getInformationCollections();
+        const data = await informationCollection.find({ userid }).toArray();
+        // console.log(data)
         return data;
     } catch (error) {
         console.error("Error querying information:", error);
@@ -81,18 +83,83 @@ export async function getByUserid(userId) {
 
 
 
-export async function saveData(title, howToCook) {
-    try {
-        await Recipes.create({ RCP_NM: title, HOW_TO_COOK: howToCook });
-    } catch (error) {
-        console.error('Error saving data:', error.message);
-        throw error;
-    }
+export async function saveData(userid,RCP_PARTS_DTLS,RCP_WAY2,RCP_SEQ,INFO_NA,INFO_WGT,
+    INFO_PRO,INFO_FAT,HASH_TAG,RCP_PAT2,RCP_NA_TIP,INFO_ENG,RCP_NM,MANUAL01,MANUAL02,MANUAL03,MANUAL04,MANUAL05,MANUAL06,MANUAL07,MANUAL08,MANUAL09,MANUAL10,MANUAL11,MANUAL12,MANUAL13,MANUAL14,MANUAL15,MANUAL16,MANUAL17,MANUAL18,MANUAL19,MANUAL20,MANUAL_IMG01,MANUAL_IMG02,MANUAL_IMG03,MANUAL_IMG04,MANUAL_IMG05,MANUAL_IMG06,MANUAL_IMG07,MANUAL_IMG08,MANUAL_IMG09,MANUAL_IMG10,MANUAL_IMG11,MANUAL_IMG12,MANUAL_IMG13,MANUAL_IMG14,MANUAL_IMG15,MANUAL_IMG16,MANUAL_IMG17,MANUAL_IMG18,MANUAL_IMG19,MANUAL_IMG20,ATT_FILE_NO_MK,ATT_FILE_NO_MAIN) {
+        try {
+            await connectsaveDB();
+            const newRecipe = new Recipes({
+                userid,
+                RCP_PARTS_DTLS,
+                RCP_WAY2,
+                RCP_SEQ,
+                INFO_NA,
+                INFO_WGT,
+                INFO_PRO,
+                INFO_FAT,
+                HASH_TAG,
+                RCP_PAT2,
+                RCP_NA_TIP,
+                INFO_ENG,
+                RCP_NM,
+                MANUAL01,
+                MANUAL02,
+                MANUAL03, 
+                MANUAL04,
+                MANUAL05,
+                MANUAL06,
+                MANUAL07,
+                MANUAL08,
+                MANUAL09,
+                MANUAL10,
+                MANUAL11,
+                MANUAL12,
+                MANUAL13,
+                MANUAL14,
+                MANUAL15,
+                MANUAL16,
+                MANUAL17,
+                MANUAL18,
+                MANUAL19,
+                MANUAL20,
+                MANUAL_IMG01,
+                MANUAL_IMG02,
+                MANUAL_IMG03,
+                MANUAL_IMG04,
+                MANUAL_IMG05,
+                MANUAL_IMG06,
+                MANUAL_IMG07,
+                MANUAL_IMG08,
+                MANUAL_IMG09,
+                MANUAL_IMG10,
+                MANUAL_IMG11,
+                MANUAL_IMG12,
+                MANUAL_IMG13,
+                MANUAL_IMG14,
+                MANUAL_IMG15,
+                MANUAL_IMG16,
+                MANUAL_IMG17,
+                MANUAL_IMG18,
+                MANUAL_IMG19,
+                MANUAL_IMG20,
+                ATT_FILE_NO_MK,
+                ATT_FILE_NO_MAIN,
+            });
+    
+            await newRecipe.save();
+    
+        } catch (error) {
+            console.error('Error saving data:', error.message);
+            throw error;
+        } finally {
+            Mongoose.connection.close();
+        }
 }
 
-export async function deleteData(title) {
+
+export async function deleteData(id) {
     try {
-        await Recipes.deleteOne({ RCP_NM: title });
+        await connectsaveDB();
+        await Recipes.deleteOne({ RCP_NM: id});
     } catch (error) {
         console.error('Error deleting data:', error.message);
         throw error;

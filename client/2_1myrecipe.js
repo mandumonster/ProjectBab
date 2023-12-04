@@ -1,3 +1,3 @@
 function clickCategory(category) {
-    window.location.href = '3.recipeDetail.html?data=' + encodeURIComponent(category);
+    window.location.href = '3_1.myrecipeDetail.html?data=' + encodeURIComponent(category);
 }

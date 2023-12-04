@@ -5,11 +5,11 @@ import { getSocketIO } from '../connection/socket.js';
 
 export async function getByType(req,res){
     try {
-        const categoryId = req.query.id;
+        let categoryId = req.query.id;
         const userId = req.query.userid;
-        console.log(categoryId, userId);
         const filteredData = await filterDataByCategory(categoryId, userId);
         res.status(200).json(filteredData);
+        console.log('filterDataByCategory 이후');
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: '1.Internal Server Error' });
@@ -20,10 +20,10 @@ export async function getRecipe(req, res) {
     try {
         const categoryId = req.query.id;
         const userId = req.query.userid;
-        console.log(categoryId, userId);
+        // console.log(categoryId, userId);
         const data = await RecipeRepository.getByUserid(userId);
-        const oneEffect = data.filter((item) => item.RCP_NM.trim() == ingredientID);
-        console.log(oneEffect);
+        const oneEffect = data.filter((item) => item.RCP_NM.trim() == categoryId);
+        // console.log(oneEffect);
         res.status(200).json(oneEffect);
     } catch (error) {
         console.error(error);
@@ -32,6 +32,7 @@ export async function getRecipe(req, res) {
 }
 
 export async function filterDataByCategory(categoryId, userId) {
+    // console.log(userId)
     const data = await RecipeRepository.getByUserid(userId);
     return data.filter(item => item.RCP_PAT2 === categoryId);
 }
@@ -41,11 +42,67 @@ export async function filterDataByCategory(categoryId, userId) {
 // router.delete('/deleteData',saveController.deleteData);
 
 
-export async function saveData(){
-    const { title, howToCook } = req.body;
+export async function saveData(req, res){
+    const { userid,RCP_PARTS_DTLS,RCP_WAY2,RCP_SEQ,INFO_NA,INFO_WGT,
+        INFO_PRO,INFO_FAT,HASH_TAG,RCP_PAT2,RCP_NA_TIP,INFO_ENG,RCP_NM,MANUAL01,MANUAL02,MANUAL03,MANUAL04,MANUAL05,MANUAL06,MANUAL07,MANUAL08,MANUAL09,MANUAL10,MANUAL11,MANUAL12,MANUAL13,MANUAL14,MANUAL15,MANUAL16,MANUAL17,MANUAL18,MANUAL19,MANUAL20,MANUAL_IMG01,MANUAL_IMG02,MANUAL_IMG03,MANUAL_IMG04,MANUAL_IMG05,MANUAL_IMG06,MANUAL_IMG07,MANUAL_IMG08,MANUAL_IMG09,MANUAL_IMG10,MANUAL_IMG11,MANUAL_IMG12,MANUAL_IMG13,MANUAL_IMG14,MANUAL_IMG15,MANUAL_IMG16,MANUAL_IMG17,MANUAL_IMG18,MANUAL_IMG19,MANUAL_IMG20,ATT_FILE_NO_MK,ATT_FILE_NO_MAIN } = req.body;
 
     try {
-        await RecipeRepository.saveData(title, howToCook);
+        await RecipeRepository.saveData(
+            userid,
+            RCP_PARTS_DTLS,
+            RCP_WAY2,
+            RCP_SEQ,
+            INFO_NA,
+            INFO_WGT,
+            INFO_PRO,
+            INFO_FAT,
+            HASH_TAG,
+            RCP_PAT2,
+            RCP_NA_TIP,
+            INFO_ENG,
+            RCP_NM,
+            MANUAL01,
+            MANUAL02,
+            MANUAL03,
+            MANUAL04,
+            MANUAL05,
+            MANUAL06,
+            MANUAL07,
+            MANUAL08,
+            MANUAL09,
+            MANUAL10,
+            MANUAL11,
+            MANUAL12,
+            MANUAL13,
+            MANUAL14,
+            MANUAL15,
+            MANUAL16,
+            MANUAL17,
+            MANUAL18,
+            MANUAL19,
+            MANUAL20,
+            MANUAL_IMG01,
+            MANUAL_IMG02,
+            MANUAL_IMG03,
+            MANUAL_IMG04,
+            MANUAL_IMG05,
+            MANUAL_IMG06,
+            MANUAL_IMG07,
+            MANUAL_IMG08,
+            MANUAL_IMG09,
+            MANUAL_IMG10,
+            MANUAL_IMG11,
+            MANUAL_IMG12,
+            MANUAL_IMG13,
+            MANUAL_IMG14,
+            MANUAL_IMG15,
+            MANUAL_IMG16,
+            MANUAL_IMG17,
+            MANUAL_IMG18,
+            MANUAL_IMG19,
+            MANUAL_IMG20,
+            ATT_FILE_NO_MK,
+            ATT_FILE_NO_MAIN);
         res.json({ success: true });
     } catch (error) {
         res.status(500).json({ error: 'Internal Server Error' });
@@ -53,11 +110,11 @@ export async function saveData(){
 };
 
 
-export async function deleteData(){
-    const title = req.query.title;
+export async function deleteData(req, res){
+    const id = req.query.id;
 
     try {
-        await RecipeRepository.deleteData(title);
+        await RecipeRepository.deleteData(id);
         res.json({ success: true });
     } catch (error) {
         res.status(500).json({ error: 'Internal Server Error' });

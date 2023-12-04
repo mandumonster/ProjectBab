@@ -4,7 +4,7 @@ import { getSocketIO } from '../connection/socket.js';
 export async function getByType(req,res){
     try {
         const categoryId = req.params.id;
-        console.log(categoryId);
+        // console.log(categoryId);
         const filteredData = await filterDataByCategory(categoryId);
         res.status(200).json(filteredData);
     } catch (error) {
@@ -16,10 +16,10 @@ export async function getByType(req,res){
 export async function getRecipe(req, res) {
     try {
         const ingredientID = req.params.id;
-        console.log(ingredientID);
+        // console.log(ingredientID);
         const data = await RecipeRepository.getAll();
         const oneEffect = data.filter((item) => item.RCP_NM.trim() == ingredientID);
-        console.log(oneEffect);
+        // console.log(oneEffect);
         res.status(200).json(oneEffect);
     } catch (error) {
         console.error(error);

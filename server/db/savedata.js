@@ -12,7 +12,7 @@ let db;
 // });
 
 // 데이터베이스 연결
-export async function connectDB() {
+export async function connectsaveDB() {
     try {
         const connection = await mongoose.connect(config.db.host, {
             dbName: "recipe"
@@ -28,4 +28,8 @@ export async function connectDB() {
 // save 컬렉션에 있는 데이터를 모두 가져오는 함수
 export function getInformationCollection() {
     return db.collection("save");
+}
+
+export function getInformationCollections() {
+    return db.collection("saves");
 }

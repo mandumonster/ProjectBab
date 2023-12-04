@@ -1,36 +1,34 @@
+var category;
+var userid;
+
 async function fetchDataBasedOnCategory() {
     var urlParams = new URLSearchParams(window.location.search);
-    var category = urlParams.get('data');
+    category = urlParams.get('data');
     
     if (category) {
         try {
             const response = await fetch(`http://localhost:8080/detail/${category}`, {
                 method: 'GET'
             });
-
+    
             if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
-
+    
             const data = await response.json();
-            // console.log(data);
-
-            // Assuming there is only one item in the data array
             const recipeData = data[0];
-
-            // Update the title in your HTML
+    
             const titleElement = document.getElementById('title');
             titleElement.textContent = recipeData.RCP_NM;
-
-            // Update the howtocook section
+    
             const ingredientsList = document.getElementById('howtocook');
             const listItem = document.createElement('li');
             listItem.innerHTML = `${recipeData.RCP_NM}<br>재료:${recipeData.RCP_PARTS_DTLS} <br>레시피 <br>${recipeData.MANUAL01}<br>${recipeData.MANUAL02}<br>${recipeData.MANUAL03}<br>${recipeData.MANUAL04}<br>${recipeData.MANUAL05}<br>${recipeData.MANUAL06}<br>${recipeData.MANUAL07}<br>${recipeData.MANUAL08}<br>${recipeData.MANUAL09}<br>${recipeData.MANUAL10} <br>${recipeData.MANUAL11}<br>${recipeData.MANUAL12}<br>${recipeData.MANUAL13}<br>${recipeData.MANUAL14}<br>${recipeData.MANUAL15}<br>${recipeData.MANUAL16}<br>${recipeData.MANUAL17}<br>${recipeData.MANUAL18}<br>${recipeData.MANUAL19}<br>${recipeData.MANUAL20}`;
             ingredientsList.appendChild(listItem);
-
-            // Call checkDataInDB to set the button value based on data existence
-            checkDataInDB();
-
+    
+            // Attach event listener here if needed
+            attachEventListener();
+    
         } catch (error) {
             console.error('Error fetching data:', error.message);
         }
@@ -38,29 +36,28 @@ async function fetchDataBasedOnCategory() {
 }
 
 // Call fetchDataBasedOnCategory when the page is loaded
-fetchDataBasedOnCategory();
-
 document.addEventListener('DOMContentLoaded', async () => {
-    const dataButton = document.getElementById('savebtn');
+    await fetchDataBasedOnCategory();
+    attachEventListener(); // Call attachEventListener after fetching data
+});
 
-    // Get the recipe title
-    var title = urlParams.get('data');
-    var userid= 'apple';    // 로그인하고 고쳐야함 ㄷㄷ
-    if (!title) {
+async function attachEventListener() {
+    const dataButton = document.getElementById('savebtn');
+    userid = 'apple';
+
+    if (!category) {
         return;
     }
 
     try {
-        const response = await fetch(`http://localhost:8080/my/detail/id=${encodeURIComponent(title)}&userid=${userid}`);
+        // Add 'await' before 'fetch' to ensure it resolves before moving to the next line
+        const response = await fetch(`http://localhost:8080/my/detail/?id=${encodeURIComponent(category)}&userid=${encodeURIComponent(userid)}`);
         const dataExists = await response.json();
-        // console.log('title:', title);
-        // console.log('dataExists:', dataExists);
-        if (dataExists) {
-            // If data exists, change the button to 'Delete'
+
+        if (dataExists.length != 0) {
             dataButton.innerText = '삭제';
             dataButton.addEventListener('click', deleteData);
         } else {
-            // If data doesn't exist, change the button to 'Save'
             dataButton.innerText = '저장';
             dataButton.addEventListener('click', saveData);
         }
@@ -68,13 +65,19 @@ document.addEventListener('DOMContentLoaded', async () => {
         console.error('Error checking data:', error.message);
     }
 
-    // Function to save data
-    // 내일할거 userid와 위의 dataExists를 받아와서 저것들을 하나의 json으로 묶은 다움 <- 여기까지 함 post로 보내버리고 그 json채로 저장하기
-    async function saveData() {
-        const response = await fetch(`http://localhost:8080/detail/${title}`)
-        var dataExists = await response.json();
-        var howToCook = dataExists
+    // Add any additional code here as needed
+    // For example, you can perform other actions based on the data or response
+}
+
+// Function to save data
+async function saveData() {
+    try {
+        const response = await fetch(`http://localhost:8080/detail/${category}`);
+        const dataExists = await response.json();
+        var howToCook = dataExists[0];
         howToCook.userid = userid;
+        // console.log(howToCook)
+
         if (!howToCook) {
             return;
         }
@@ -85,25 +88,27 @@ document.addEventListener('DOMContentLoaded', async () => {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({howToCook }),
+                body: JSON.stringify(howToCook),
             });
 
             alert('Data saved to the database.');
         } catch (error) {
             console.error('Error saving data:', error.message);
         }
+    } catch (error) {
+        console.error('Error fetching data before saving:', error.message);
     }
+}
 
-    // Function to delete data
-    async function deleteData() {
-        try {
-            await fetch(`http://localhost:8080/deleteData?title=${encodeURIComponent(title)}`, {
-                method: 'DELETE',
-            });
+// Function to delete data
+async function deleteData() {
+    try {
+        await fetch(`http://localhost:8080/deleteData/?id=${encodeURIComponent(category)}`, {
+            method: 'DELETE',
+        });
 
-            alert('Data deleted from the database.');
-        } catch (error) {
-            console.error('Error deleting data:', error.message);
-        }
+        alert('Data deleted from the database.');
+    } catch (error) {
+        console.error('Error deleting data:', error.message);
     }
-});
+}
