@@ -60,7 +60,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        const url = `http://localhost:8080/${category}/?search=${encodeURIComponent(searchTerm)}`;
+        const url = `http://localhost:8080/my/category/?id=${encodeURIComponent(category)}&userid=${userid}&search=${encodeURIComponent(searchTerm)}`;
 
         try {
             // fetch 요청
