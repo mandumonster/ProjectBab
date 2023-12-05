@@ -15,7 +15,7 @@ let db;
 export async function connectsaveDB() {
     try {
         const connection = await mongoose.connect(config.db.host, {
-            dbName: "recipe"
+            dbName: "bob"
         });
         db = connection.connection; // Assign the connection to db
         console.log("Connected to MongoDB");
@@ -27,9 +27,9 @@ export async function connectsaveDB() {
 
 // save 컬렉션에 있는 데이터를 모두 가져오는 함수
 export function getInformationCollection() {
-    return db.collection("save");
+    return db.collection("user_recipe");
 }
 
 export function getInformationCollections() {
-    return db.collection("saves");
+    return db.collection("user_recipes");
 }

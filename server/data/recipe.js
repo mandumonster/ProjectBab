@@ -1,10 +1,10 @@
-import { connectDB, getInformationCollection } from "../db/database.js";
+import { connectrecipeDB, getInformationCollection } from "../db/database.js";
 import Mongoose from "mongoose";
 
 
 export async function getAll() {
     try {
-        await connectDB(); 
+        await connectrecipeDB(); 
 
         const informationCollection = getInformationCollection();
 

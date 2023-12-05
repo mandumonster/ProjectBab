@@ -62,7 +62,7 @@ const foodSchema = new Mongoose.Schema({
     ATT_FILE_NO_MAIN: String,
 });
 
-const Recipes = Mongoose.model('save', foodSchema);
+const Recipes = Mongoose.model('user_recipe', foodSchema);
 
 
 // Function to get data by user ID

@@ -1,9 +1,10 @@
 import Mongoose from "mongoose";
+import MongoDb from "mongodb";
 import { config } from "../config.js";
 
 let db;
 // 이름을 recipe로 바꾸기
-export async function connectDB() {
+export async function connectrecipeDB() {
     try {
         const connection = await Mongoose.connect(config.db.host, {
             dbName: "recipe"

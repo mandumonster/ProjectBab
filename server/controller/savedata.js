@@ -9,7 +9,6 @@ export async function getByType(req,res){
         const userId = req.query.userid;
         const filteredData = await filterDataByCategory(categoryId, userId);
         res.status(200).json(filteredData);
-        console.log('filterDataByCategory 이후');
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: '1.Internal Server Error' });

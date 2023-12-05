@@ -1,6 +1,15 @@
 var category;
 var userid;
-//userid=;
+try{
+    const response = await fetch(`http://localhost:8080/me`, {
+                method: 'GET'
+            });
+    const data = await response.json();
+    userid=data.username;
+}
+catch (error) {
+    console.error('Error fetching data:', error.message);
+}
 
 async function fetchDataBasedOnCategory() {
     var urlParams = new URLSearchParams(window.location.search);
@@ -44,7 +53,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 async function attachEventListener() {
     const dataButton = document.getElementById('savebtn');
-    userid = 'apple';
 
     if (!category) {
         return;
