@@ -17,16 +17,31 @@ export async function connectrecipeDB() {
     }
 }
 
-export function getInformationCollection() {
+export function getallrecipe() {
     return db.collection("all");
 }
 
+export async function connectsaveDB() {
+    try {
+        const connection = await Mongoose.connect(config.db.host, {
+            dbName: "bob"
+        });
+        db = connection.connection; // Assign the connection to db
+        console.log("Connected to MongoDB");
+    } catch (error) {
+        console.error("Error connecting to MongoDB:", error);
+        throw error;
+    }
+}
+
+// save 컬렉션에 있는 데이터를 모두 가져오는 함수
+export function getuserecipe() {
+    return db.collection("user_recipes");
+}
+
+
 // auth
 
-export async function connectDB(){
-    return MongoDb.MongoClient.connect(config.db.host)
-        .then((client) => db = client.db('bob'));
-} 
 
 // 관리자 컬렉션
 export function system_admins(){

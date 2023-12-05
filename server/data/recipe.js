@@ -1,4 +1,4 @@
-import { connectrecipeDB, getInformationCollection } from "../db/database.js";
+import { connectrecipeDB, getallrecipe } from "../db/database.js";
 import Mongoose from "mongoose";
 
 
@@ -6,7 +6,7 @@ export async function getAll() {
     try {
         await connectrecipeDB(); 
 
-        const informationCollection = getInformationCollection();
+        const informationCollection = getallrecipe();
 
         const data = await informationCollection.find().toArray();
         return data;

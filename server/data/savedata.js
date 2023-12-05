@@ -1,4 +1,4 @@
-import { connectsaveDB,getInformationCollections } from "../db/savedata.js";
+import { connectsaveDB,getuserecipe } from "../db/database.js";
 import Mongoose from "mongoose";
 import { getAll } from "./recipe.js";
 
@@ -69,7 +69,7 @@ const Recipes = Mongoose.model('user_recipe', foodSchema);
 export async function getByUserid(userid) {
     try {
         await connectsaveDB();
-        const informationCollection = getInformationCollections();
+        const informationCollection = getuserecipe();
         const data = await informationCollection.find({ userid }).toArray();
         // console.log(data)
         return data;

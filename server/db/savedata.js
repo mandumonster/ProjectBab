@@ -26,10 +26,6 @@ export async function connectsaveDB() {
 }
 
 // save 컬렉션에 있는 데이터를 모두 가져오는 함수
-export function getInformationCollection() {
-    return db.collection("user_recipe");
-}
-
-export function getInformationCollections() {
+export function getuserecipe() {
     return db.collection("user_recipes");
 }

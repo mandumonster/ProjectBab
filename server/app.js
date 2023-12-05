@@ -2,9 +2,8 @@ import express from 'express';
 import { config } from './config.js';
 import cors from "cors";
 import morgan from "morgan";
-import { connectDB, connectrecipeDB} from './db/database.js';
+import { connectsaveDB, connectrecipeDB} from './db/database.js';
 import authRouter from './router/auth.js';
-import { connectsaveDB } from './db/savedata.js';
 import recipyRouter from './router/recipe.js'
 import { initSocket } from "./connection/socket.js";
 
@@ -21,7 +20,7 @@ app.use((req, res, next) => {
     res.sendStatus(404);
 });
 
-Promise.all([connectDB(), connectsaveDB(),connectrecipeDB()])
+Promise.all([connectsaveDB(),connectrecipeDB()])
     .then(() => {
         const server = app.listen(config.host.port);
         console.log("Server started successfully");
