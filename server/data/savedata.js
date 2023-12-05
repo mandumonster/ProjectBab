@@ -156,10 +156,10 @@ export async function saveData(userid,RCP_PARTS_DTLS,RCP_WAY2,RCP_SEQ,INFO_NA,IN
 }
 
 
-export async function deleteData(id) {
+export async function deleteData(id,rcpname) {
     try {
         await connectsaveDB();
-        await Recipes.deleteOne({ RCP_NM: id});
+        await Recipes.deleteOne({ RCP_NM: rcpname, userid: id });
     } catch (error) {
         console.error('Error deleting data:', error.message);
         throw error;

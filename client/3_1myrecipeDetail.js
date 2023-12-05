@@ -1,14 +1,33 @@
-var userid='apple'; // userid
+// var userid; // userid
+// try{
+//     const storedToken = localStorage.getItem('token');
+//     const response = await fetch(`http://localhost:8080/auth/me`, {
+//                 method: 'GET',
+//                 headers: {
+//                     'Authorization': `Bearer ${storedToken}`
+//                   }
+//             });
+//     const data = await response.json();
+//     userid=data.token;
+// }
+// catch (error) {
+//     console.error('Error fetching data:', error.message);
+// }
 
 // 데이터를 링크에서 받아와서 fetch하는 함수
+const token = localStorage.getItem('token')
+
 async function fetchDataBasedOnCategory() {
     var urlParams = new URLSearchParams(window.location.search);
     var category = urlParams.get('data');
     console.log(category)
     if (category) {
         try {
-            const response = await fetch(`http://localhost:8080/my/category/?id=${encodeURIComponent(category)}&userid=${userid}`, {
-                method: 'GET'
+            const response = await fetch(`http://localhost:8080/recipe/my/category/?id=${encodeURIComponent(category)}`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                  }
             });
             if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
@@ -52,6 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
     async function handleFormSubmission() {
         // 검색어를 가져와서 URL에 추가
         const searchTerm = input.value;
+        const token = localStorage.getItem('token')
 
         // Get category from URL parameters
         const urlParams = new URLSearchParams(window.location.search);
@@ -62,11 +82,16 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        const url = `http://localhost:8080/my/category/?id=${encodeURIComponent(category)}&userid=${userid}&search=${encodeURIComponent(searchTerm)}`;
+        const url = `http://localhost:8080/recipe/my/category/?id=${encodeURIComponent(category)}&search=${encodeURIComponent(searchTerm)}`;
 
         try {
             // fetch 요청
-            const response = await fetch(url);
+            const response = await fetch(url, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                      }
+                });
 
             if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);

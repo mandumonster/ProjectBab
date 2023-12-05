@@ -1,15 +1,25 @@
 var category;
-var userid;
-try{
-    const response = await fetch(`http://localhost:8080/auth/me`, {
-                method: 'GET'
-            });
-    const data = await response.json();
-    userid=data.username;
-}
-catch (error) {
-    console.error('Error fetching data:', error.message);
-}
+// var userid;
+var token = localStorage.getItem('token')
+// async function fetchData() {
+//     try {
+//       const response = await fetch(`http://localhost:8080/auth/me`, {
+//         method: 'GET'
+//       });
+  
+//       if (!response.ok) {
+//         throw new Error('Response not OK');
+//       }
+  
+//       const data = await response.json();
+//       userid = data.token;
+//     } catch {
+//       return;
+//     }
+// } 
+// fetchData();
+// console.log(userid)
+
 
 async function fetchDataBasedOnCategory() {
     var urlParams = new URLSearchParams(window.location.search);
@@ -17,7 +27,7 @@ async function fetchDataBasedOnCategory() {
     
     if (category) {
         try {
-            const response = await fetch(`http://localhost:8080/detail/${category}`, {
+            const response = await fetch(`http://localhost:8080/recipe/detail/${category}`, {
                 method: 'GET'
             });
     
@@ -27,6 +37,7 @@ async function fetchDataBasedOnCategory() {
     
             const data = await response.json();
             const recipeData = data[0];
+            console.log(recipeData)
     
             const titleElement = document.getElementById('title');
             titleElement.textContent = recipeData.RCP_NM;
@@ -60,7 +71,12 @@ async function attachEventListener() {
 
     try {
         // Add 'await' before 'fetch' to ensure it resolves before moving to the next line
-        const response = await fetch(`http://localhost:8080/my/detail/?id=${encodeURIComponent(category)}&userid=${encodeURIComponent(userid)}`);
+        const response = await fetch(`http://localhost:8080/recipe/my/detail/?id=${encodeURIComponent(category)}`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            },
+        });
         const dataExists = await response.json();
 
         if (dataExists.length != 0) {
@@ -81,21 +97,26 @@ async function attachEventListener() {
 // Function to save data
 async function saveData() {
     try {
-        const response = await fetch(`http://localhost:8080/detail/${category}`);
+        const response = await fetch(`http://localhost:8080/recipe/detail/${category}`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                },
+            });
         const dataExists = await response.json();
         var howToCook = dataExists[0];
-        howToCook.userid = userid;
-        // console.log(howToCook)
+        console.log(howToCook)
 
         if (!howToCook) {
             return;
         }
 
         try {
-            await fetch('http://localhost:8080/saveData', {
+            await fetch('http://localhost:8080/recipe/saveData', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
                 },
                 body: JSON.stringify(howToCook),
             });
@@ -112,8 +133,11 @@ async function saveData() {
 // Function to delete data
 async function deleteData() {
     try {
-        await fetch(`http://localhost:8080/deleteData/?id=${encodeURIComponent(category)}`, {
+        await fetch(`http://localhost:8080/recipe/deleteData/?id=${encodeURIComponent(category)}`, {
             method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            },
         });
 
         alert('Data deleted from the database.');

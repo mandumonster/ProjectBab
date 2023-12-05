@@ -9,16 +9,16 @@ const ObjectId = MongoDb.ObjectId;
 export async function findByUserid(userid){
     return getUsers()
         .find({ userid })
-        .next()
-        .then(mapOptionalUser);
+        // .next()
+        // .then(mapOptionalUser);
 }
 
 // object id인 _id로 찾기, 고유값
 export async function findById(id){
     return getUsers()
         .find({ _id: new ObjectId(id) })
-        .next()
-        .then(mapOptionalUser);
+        // .next()
+        // .then(mapOptionalUser);
 }
 
 // i

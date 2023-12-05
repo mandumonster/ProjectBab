@@ -1,23 +1,24 @@
 var category;
-var userid;
-try{
-    const response = await fetch(`http://localhost:8080/auth/me`, {
-                method: 'GET'
-            });
-    const data = await response.json();
-    userid=data.username;
-}
-catch (error) {
-    console.error('Error fetching data:', error.message);
-}
+var token = localStorage.getItem('token')
+// var userid;
+// try{
+//     const response = await fetch(`http://localhost:8080/auth/me`, {
+//                 method: 'GET'
+//             });
+//     const data = await response.json();
+//     userid=data.token;
+// }
+// catch (error) {
+//     console.error('Error fetching data:', error.message);
+// }
 
 async function fetchDataBasedOnCategory() {
     var urlParams = new URLSearchParams(window.location.search);
     category = urlParams.get('data');
-    
+    console.log(category)
     if (category) {
         try {
-            const response = await fetch(`http://localhost:8080/detail/${category}`, {
+            const response = await fetch(`http://localhost:8080/recipe/detail/${category}`, {
                 method: 'GET'
             });
     
@@ -26,6 +27,7 @@ async function fetchDataBasedOnCategory() {
             }
     
             const data = await response.json();
+            console.log(data)
             const recipeData = data[0];
     
             const titleElement = document.getElementById('title');
@@ -53,6 +55,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 async function attachEventListener() {
     const dataButton = document.getElementById('savebtn');
+    const token = localStorage.getItem('token')
 
     if (!category) {
         return;
@@ -60,7 +63,12 @@ async function attachEventListener() {
 
     try {
         // Add 'await' before 'fetch' to ensure it resolves before moving to the next line
-        const response = await fetch(`http://localhost:8080/my/detail/?id=${encodeURIComponent(category)}&userid=${encodeURIComponent(userid)}`);
+        const response = await fetch(`http://localhost:8080/recipe//my/detail/?id=${encodeURIComponent(category)}`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`
+              }
+        });
         const dataExists = await response.json();
 
         if (dataExists.length != 0) {
@@ -81,10 +89,9 @@ async function attachEventListener() {
 // Function to save data
 async function saveData() {
     try {
-        const response = await fetch(`http://localhost:8080/detail/${category}`);
+        const response = await fetch(`localhost:8080/recipe/detail/${category}`);
         const dataExists = await response.json();
         var howToCook = dataExists[0];
-        howToCook.userid = userid;
         // console.log(howToCook)
 
         if (!howToCook) {
@@ -92,10 +99,11 @@ async function saveData() {
         }
 
         try {
-            await fetch('http://localhost:8080/saveData', {
+            await fetch('http://localhost:8080/recipe/saveData', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
                 },
                 body: JSON.stringify(howToCook),
             });
@@ -112,8 +120,11 @@ async function saveData() {
 // Function to delete data
 async function deleteData() {
     try {
-        await fetch(`http://localhost:8080/deleteData/?id=${encodeURIComponent(category)}`, {
+        await fetch(`http://localhost:8080/recipe/deleteData/?id=${encodeURIComponent(category)}`, {
             method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            },
         });
 
         alert('Data deleted from the database.');

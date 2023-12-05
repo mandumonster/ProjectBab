@@ -3,7 +3,7 @@ async function fetchDataBasedOnCategory() {
     var category = urlParams.get('data');
     if (category) {
         try {
-            const response = await fetch(`http://localhost:8080/${category}`, {
+            const response = await fetch(`http://localhost:8080/recipe/${category}`, {
                 method: 'GET'
             });
             if (!response.ok) {
@@ -57,7 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        const url = `http://localhost:8080/${category}/?search=${encodeURIComponent(searchTerm)}`;
+        const url = `http://localhost:8080/recipe/${category}/?search=${encodeURIComponent(searchTerm)}`;
 
         try {
             // fetch 요청

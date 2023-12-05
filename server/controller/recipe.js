@@ -16,7 +16,7 @@ export async function getByType(req,res){
 export async function getRecipe(req, res) {
     try {
         const ingredientID = req.params.id;
-        // console.log(ingredientID);
+        console.log(ingredientID);
         const data = await RecipeRepository.getAll();
         const oneEffect = data.filter((item) => item.RCP_NM.trim() == ingredientID);
         // console.log(oneEffect);
