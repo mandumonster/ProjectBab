@@ -1,7 +1,8 @@
-var userid='apple';
+var userid='apple'; // userid
 
+// 데이터를 링크에서 받아와서 fetch하는 함수
 async function fetchDataBasedOnCategory() {
-    var urlParams = new URLSearchParams(window.location.search); // 로그인하고 받아올 userid 근데 이걸 어디서 받아와야할지모르겠어살려줘
+    var urlParams = new URLSearchParams(window.location.search);
     var category = urlParams.get('data');
     console.log(category)
     if (category) {
@@ -25,6 +26,7 @@ async function fetchDataBasedOnCategory() {
         }
     }
 }
+
 
 document.addEventListener('DOMContentLoaded', () => {
     const form = document.querySelector('form');

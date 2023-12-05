@@ -1,5 +1,6 @@
 var category;
 var userid;
+//userid=;
 
 async function fetchDataBasedOnCategory() {
     var urlParams = new URLSearchParams(window.location.search);
